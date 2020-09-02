@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.vladmarica.betterpingdisplay.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "InGameHudMixin",
+    "PlayerListHudAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

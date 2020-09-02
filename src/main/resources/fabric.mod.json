@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "modid",
+  "version": "${version}",
+
+  "name": "Better Ping Display",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Quintinity"
+  ],
+  "contact": {
+    "homepage": "https://github.com/vladmarica/better-ping-display-fabric",
+    "sources": "https://github.com/vladmarica/better-ping-display-fabric"
+  },
+
+  "license": "MIT",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "com.vladmarica.betterpingdisplay.BetterPingDisplayMod"
+    ]
+  },
+  "mixins": [
+    "betterpingdisplay.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.15.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
