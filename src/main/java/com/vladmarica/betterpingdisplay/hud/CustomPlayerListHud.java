@@ -4,7 +4,8 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.vladmarica.betterpingdisplay.mixin.PlayerListHudAccessor;
+import com.vladmarica.betterpingdisplay.Config;
+import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -27,13 +28,18 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.GameMode;
 
 public final class CustomPlayerListHud {
-  private static final Ordering<PlayerListEntry>  ENTRY_ORDERING = Ordering.from(new EntryOrderComparator());
+
+  private static final Ordering<PlayerListEntry> ENTRY_ORDERING = Ordering.from(new EntryOrderComparator());
+  private static final int PING_TEXT_RENDER_OFFSET = -13;
+  private static final int PLAYER_SLOT_EXTRA_WIDTH = 45;
+  private static final int PLAYER_ICON_WIDTH = 9;
 
   public static void render(PlayerListHud hud, int width, Scoreboard scoreboard, ScoreboardObjective obj) {
     MinecraftClient mc = MinecraftClient.getInstance();
     TextRenderer textRenderer = mc.textRenderer;
     Text header = PlayerListHudUtil.getHeader(hud);
     Text footer = PlayerListHudUtil.getFooter(hud);
+    Config config = BetterPingDisplayMod.instance().getConfig();
 
     ClientPlayNetworkHandler clientPlayNetworkHandler = mc.player.networkHandler;
     List<PlayerListEntry> playerList = ENTRY_ORDERING.sortedCopy(clientPlayNetworkHandler.getPlayerList());
@@ -60,7 +66,7 @@ public final class CustomPlayerListHud {
       ++n;
     }
 
-    boolean bl = mc.isInSingleplayer() || mc.getNetworkHandler().getConnection().isEncrypted();
+    boolean displayPlayerIcons = mc.isInSingleplayer() || mc.getNetworkHandler().getConnection().isEncrypted();
     int q;
     if (obj != null) {
       if (obj.getRenderType() == ScoreboardCriterion.RenderType.HEARTS) {
@@ -71,7 +77,7 @@ public final class CustomPlayerListHud {
     } else {
       q = 0;
     }
-    int r = Math.min(n * ((bl ? 9 : 0) + i + q + 13), width - 50) / n;
+    int r = Math.min(n * ((displayPlayerIcons ? PLAYER_ICON_WIDTH : 0) + i + q + 13 + PLAYER_SLOT_EXTRA_WIDTH), width - 50) / n;
     int s = width / 2 - (r * n + (n - 1) * 5) / 2;
     int t = 10;
     int u = r * n + (n - 1) * 5;
@@ -135,7 +141,7 @@ public final class CustomPlayerListHud {
         PlayerListEntry player = playerList.get(x);
         GameProfile gameProfile = player.getProfile();
         int ah;
-        if (bl) {
+        if (displayPlayerIcons) {
           PlayerEntity playerEntity = mc.world.getPlayerByUuid(gameProfile.getId());
           boolean bl2 = playerEntity != null && playerEntity.isPartVisible(PlayerModelPart.CAPE) && ("Dinnerbone".equals(gameProfile.getName()) || "Grumm".equals(gameProfile.getName()));
           mc.getTextureManager().bindTexture(player.getSkinTexture());
@@ -166,7 +172,16 @@ public final class CustomPlayerListHud {
           }
         }
 
-        PlayerListHudUtil.renderLatencyIcon(hud, r, aa - (bl ? 9 : 0), ab, player);
+        // Here is the magic, rendering the ping text
+        String pingString = String.format(config.getTextFormatString(), player.getLatency());
+        int pingStringWidth = textRenderer.getStringWidth(pingString);
+        textRenderer.drawWithShadow(
+            pingString,
+            (float) r + aa - pingStringWidth + PING_TEXT_RENDER_OFFSET - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0),
+            (float) ab,
+            config.getTextColor());
+
+        PlayerListHudUtil.renderLatencyIcon(hud, r, aa - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0), ab, player);
       }
     }
 

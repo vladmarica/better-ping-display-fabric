@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "modid",
-  "version": "${version}",
+  "version": "1.0",
 
   "name": "Better Ping Display",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Shows the actual ping number instead of just bars in the player list.!",
   "authors": [
     "Quintinity"
   ],
@@ -28,7 +28,6 @@
 
   "depends": {
     "fabricloader": ">=0.7.4",
-    "fabric": "*",
     "minecraft": "1.15.x"
   },
   "suggests": {
