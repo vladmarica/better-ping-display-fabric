@@ -12,8 +12,7 @@ Go [**here**](https://github.com/vladmarica/better-ping-display) for the Minecra
 This is a client-side mod. The server doesn't need to have it installed. It works even when playing on vanilla servers.
 
 ## Supported Minecraft Versions
-* **1.15.2**
-* **1.16.2**
+* **1.15.x**
 
 
 ## Requirements
