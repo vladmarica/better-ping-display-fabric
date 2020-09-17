@@ -5,6 +5,7 @@ import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.vladmarica.betterpingdisplay.Config;
+import com.vladmarica.betterpingdisplay.hud.CustomPlayerListHud.EntryOrderComparator;
 import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -18,11 +19,13 @@ import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.entity.PlayerModelPart;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.GameMode;
@@ -34,7 +37,7 @@ public final class CustomPlayerListHud {
   private static final int PLAYER_SLOT_EXTRA_WIDTH = 45;
   private static final int PLAYER_ICON_WIDTH = 9;
 
-  public static void render(PlayerListHud hud, int width, Scoreboard scoreboard, ScoreboardObjective obj) {
+  public static void render(PlayerListHud hud, MatrixStack stack, int width, Scoreboard scoreboard, ScoreboardObjective obj) {
     MinecraftClient mc = MinecraftClient.getInstance();
     TextRenderer textRenderer = mc.textRenderer;
     Text header = PlayerListHudUtil.getHeader(hud);
@@ -50,10 +53,10 @@ public final class CustomPlayerListHud {
     int n;
     while(playerListIterator.hasNext()) {
       PlayerListEntry playerListEntry = (PlayerListEntry)playerListIterator.next();
-      n = mc.textRenderer.getStringWidth(hud.getPlayerName(playerListEntry).asFormattedString());
+      n = mc.textRenderer.getWidth(hud.getPlayerName(playerListEntry));
       i = Math.max(i, n);
       if (obj != null && obj.getRenderType() != ScoreboardCriterion.RenderType.HEARTS) {
-        n = textRenderer.getStringWidth(" " + scoreboard.getPlayerScore(playerListEntry.getProfile().getName(), obj).getScore());
+        n = textRenderer.getWidth(" " + scoreboard.getPlayerScore(playerListEntry.getProfile().getName(), obj).getScore());
         j = Math.max(j, n);
       }
     }
@@ -81,23 +84,23 @@ public final class CustomPlayerListHud {
     int s = width / 2 - (r * n + (n - 1) * 5) / 2;
     int t = 10;
     int u = r * n + (n - 1) * 5;
-    List<String> list2 = null;
+    List<OrderedText> list2 = null;
     if (header != null) {
-      list2 = mc.textRenderer.wrapStringToWidthAsList(header.asFormattedString(), width - 50);
+      list2 = mc.textRenderer.wrapLines(header, width - 50);
 
       String string;
-      for(Iterator var18 = list2.iterator(); var18.hasNext(); u = Math.max(u, mc.textRenderer.getStringWidth(string))) {
+      for(Iterator var18 = list2.iterator(); var18.hasNext(); u = Math.max(u, mc.textRenderer.getWidth(string))) {
         string = (String)var18.next();
       }
     }
 
-    List<String> list3 = null;
+    List<OrderedText> list3 = null;
     String string3;
     Iterator var36;
     if (footer != null) {
-      list3 = mc.textRenderer.wrapStringToWidthAsList(footer.asFormattedString(), width - 50);
+      list3 = mc.textRenderer.wrapLines(footer, width - 50);
 
-      for(var36 = list3.iterator(); var36.hasNext(); u = Math.max(u, mc.textRenderer.getStringWidth(string3))) {
+      for(var36 = list3.iterator(); var36.hasNext(); u = Math.max(u, mc.textRenderer.getWidth(string3))) {
         string3 = (String)var36.next();
       }
     }
@@ -112,18 +115,18 @@ public final class CustomPlayerListHud {
       var10001 = t - 1;
       var10002 = width / 2 + u / 2 + 1;
       var10004 = list2.size();
-      DrawableHelper.fill(var10000, var10001, var10002, t + var10004 * 9, Integer.MIN_VALUE);
+      DrawableHelper.fill(stack, var10000, var10001, var10002, t + var10004 * 9, Integer.MIN_VALUE);
 
       for(var36 = list2.iterator(); var36.hasNext(); t += 9) {
         string3 = (String)var36.next();
-        y = mc.textRenderer.getStringWidth(string3);
-        mc.textRenderer.drawWithShadow(string3, (float)(width / 2 - y / 2), (float)t, -1);
+        y = mc.textRenderer.getWidth(string3);
+        mc.textRenderer.drawWithShadow(stack, string3, (float)(width / 2 - y / 2), (float)t, -1);
       }
 
       ++t;
     }
 
-    DrawableHelper.fill(width / 2 - u / 2 - 1, t - 1, width / 2 + u / 2 + 1, t + m * 9, Integer.MIN_VALUE);
+    DrawableHelper.fill(stack, width / 2 - u / 2 - 1, t - 1, width / 2 + u / 2 + 1, t + m * 9, Integer.MIN_VALUE);
     int w = mc.options.getTextBackgroundColor(553648127);
 
     int ai;
@@ -132,7 +135,7 @@ public final class CustomPlayerListHud {
       ai = x % m;
       int aa = s + y * r + y * 5;
       int ab = t + ai * 9;
-      DrawableHelper.fill(aa, ab, aa + r, ab + 8, w);
+      DrawableHelper.fill(stack, aa, ab, aa + r, ab + 8, w);
       RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
       RenderSystem.enableAlphaTest();
       RenderSystem.enableBlend();
@@ -147,41 +150,42 @@ public final class CustomPlayerListHud {
           mc.getTextureManager().bindTexture(player.getSkinTexture());
           ah = 8 + (bl2 ? 8 : 0);
           int ad = 8 * (bl2 ? -1 : 1);
-          DrawableHelper.blit(aa, ab, 8, 8, 8.0F, (float)ah, 8, ad, 64, 64);
+          DrawableHelper.drawTexture(stack, aa, ab, 8, 8, 8.0F, (float)ah, 8, ad, 64, 64);
           if (playerEntity != null && playerEntity.isPartVisible(PlayerModelPart.HAT)) {
             int ae = 8 + (bl2 ? 8 : 0);
             int af = 8 * (bl2 ? -1 : 1);
-            DrawableHelper.blit(aa, ab, 8, 8, 40.0F, (float)ae, 8, af, 64, 64);
+            DrawableHelper.drawTexture(stack, aa, ab, 8, 8, 40.0F, (float)ae, 8, af, 64, 64);
           }
 
           aa += 9;
         }
 
-        String string4 = hud.getPlayerName(player).asFormattedString();
+        Text playerName = hud.getPlayerName(player);
         if (player.getGameMode() == GameMode.SPECTATOR) {
-          mc.textRenderer.drawWithShadow(Formatting.ITALIC + string4, (float)aa, (float)ab, -1862270977);
+          mc.textRenderer.drawWithShadow(stack, playerName, (float)aa, (float)ab, -1862270977);
         } else {
-          mc.textRenderer.drawWithShadow(string4, (float)aa, (float)ab, -1);
+          mc.textRenderer.drawWithShadow(stack, playerName, (float)aa, (float)ab, -1);
         }
 
         if (obj != null && player.getGameMode() != GameMode.SPECTATOR) {
           int ag = aa + i + 1;
           ah = ag + q;
           if (ah - ag > 5) {
-            PlayerListHudUtil.renderScoreboardObjective(hud, obj, ab, gameProfile.getName(), ag, ah, player);
+            PlayerListHudUtil.renderScoreboardObjective(hud, stack, obj, ab, gameProfile.getName(), ag, ah, player);
           }
         }
 
         // Here is the magic, rendering the ping text
         String pingString = String.format(config.getTextFormatString(), player.getLatency());
-        int pingStringWidth = textRenderer.getStringWidth(pingString);
-        textRenderer.drawWithShadow(
+        int pingStringWidth = textRenderer.getWidth(pingString);
+        textRenderer.draw(
+            stack,
             pingString,
             (float) r + aa - pingStringWidth + PING_TEXT_RENDER_OFFSET - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0),
             (float) ab,
             config.getTextColor());
 
-        PlayerListHudUtil.renderLatencyIcon(hud, r, aa - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0), ab, player);
+        PlayerListHudUtil.renderLatencyIcon(hud, stack ,r, aa - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0), ab, player);
       }
     }
 
@@ -191,12 +195,12 @@ public final class CustomPlayerListHud {
       var10001 = t - 1;
       var10002 = width / 2 + u / 2 + 1;
       var10004 = list3.size();
-      DrawableHelper.fill(var10000, var10001, var10002, t + var10004 * 9, Integer.MIN_VALUE);
+      DrawableHelper.fill(stack, var10000, var10001, var10002, t + var10004 * 9, Integer.MIN_VALUE);
 
       for(Iterator var39 = list3.iterator(); var39.hasNext(); t += 9) {
         String string5 = (String)var39.next();
-        ai = textRenderer.getStringWidth(string5);
-        textRenderer.drawWithShadow(string5, (float)(width / 2 - ai / 2), (float)t, -1);
+        ai = textRenderer.getWidth(string5);
+        textRenderer.drawWithShadow(stack, string5, (float)(width / 2 - ai / 2), (float)t, -1);
       }
     }
   }

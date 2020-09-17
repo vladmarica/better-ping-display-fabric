@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "betterpingdisplay",
   "version": "1.0",
 
   "name": "Better Ping Display",
-  "description": "Shows the actual ping number instead of just bars in the player list.!",
+  "description": "Shows the actual ping number instead of just bars in the player list!",
   "authors": [
     "Quintinity"
   ],
@@ -28,7 +28,7 @@
 
   "depends": {
     "fabricloader": ">=0.7.4",
-    "minecraft": "1.15.x"
+    "minecraft": "1.16.x"
   },
   "suggests": {
     "flamingo": "*"

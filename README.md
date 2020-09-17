@@ -13,7 +13,7 @@ This is a client-side mod. The server doesn't need to have it installed. It work
 
 ## Supported Minecraft Versions
 * **1.15.x**
-
+* **1.16.x**
 
 ## Requirements
 * [Fabric](https://fabricmc.net/)
