@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "modid",
-  "version": "1.0",
+  "version": "1.1",
 
   "name": "Better Ping Display",
   "description": "Shows the actual ping number instead of just bars in the player list.!",
