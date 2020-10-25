@@ -133,7 +133,7 @@ public final class CustomPlayerListHud {
       ai = x % m;
       int aa = s + y * r + y * 5;
       int ab = t + ai * 9;
-      DrawableHelper.fill(aa, ab, aa + r, ab + 8, w);
+      DrawableHelper.fill(aa, ab, aa + r - 1, ab + 8, w);
       RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
       RenderSystem.enableAlphaTest();
       RenderSystem.enableBlend();
