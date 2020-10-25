@@ -26,6 +26,7 @@ public class BetterPingDisplayMod implements ModInitializer {
 			try {
 				ConfigData data = Config.loadConfigFile(configFile);
 				config = new Config(data);
+				Config.writeConfigFile(configFile, data);
 			} catch (Exception ex) {
 				LOGGER.error("Failed to load config file, using default. Error: {}", ex.getMessage());
 			}

@@ -4,8 +4,8 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.vladmarica.betterpingdisplay.Config;
 import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
+import com.vladmarica.betterpingdisplay.Config;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +33,7 @@ public final class CustomPlayerListHud {
   private static final int PING_TEXT_RENDER_OFFSET = -13;
   private static final int PLAYER_SLOT_EXTRA_WIDTH = 45;
   private static final int PLAYER_ICON_WIDTH = 9;
+  private static final int PING_BARS_WIDTH = 11;
 
   public static void render(PlayerListHud hud, int width, Scoreboard scoreboard, ScoreboardObjective obj) {
     MinecraftClient mc = MinecraftClient.getInstance();
@@ -175,13 +176,30 @@ public final class CustomPlayerListHud {
         // Here is the magic, rendering the ping text
         String pingString = String.format(config.getTextFormatString(), player.getLatency());
         int pingStringWidth = textRenderer.getStringWidth(pingString);
-        textRenderer.drawWithShadow(
-            pingString,
-            (float) r + aa - pingStringWidth + PING_TEXT_RENDER_OFFSET - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0),
-            (float) ab,
-            config.getTextColor());
+        int textX = r + aa - pingStringWidth + PING_TEXT_RENDER_OFFSET;
 
-        PlayerListHudUtil.renderLatencyIcon(hud, r, aa - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0), ab, player);
+        if (displayPlayerIcons) {
+          textX -= PLAYER_ICON_WIDTH;
+        }
+
+        if (!config.shouldRenderPingBars()) {
+          textX += PING_BARS_WIDTH;
+        }
+
+        int pingTextColor = config.shouldAutoColorPingText()
+            ? PingColors.getColor(player.getLatency())
+            : config.getTextColor();
+
+        textRenderer.drawWithShadow(pingString, (float) textX, (float) ab, pingTextColor);
+
+        if (config.shouldRenderPingBars()) {
+          PlayerListHudUtil.renderLatencyIcon(
+              hud, r, aa - (displayPlayerIcons ? PLAYER_ICON_WIDTH : 0), ab, player);
+        } else {
+          // If we don't render ping bars, we need to reset the render system color so the rest
+          // of the player list renders properly
+          RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
       }
     }
 
