@@ -6,7 +6,7 @@ A [Fabric](https://fabricmc.net/) mod for Minecraft to display each player's pin
 
 Go [**here**](https://github.com/vladmarica/better-ping-display) for the Minecraft Forge edition of this mod.
 
-![](https://i.imgur.com/LYB3o4h.png)
+![](https://i.imgur.com/HTrH0i2.png)
 
 This is a client-side mod. The server doesn't need to have it installed. It works even when playing on vanilla servers.
 
