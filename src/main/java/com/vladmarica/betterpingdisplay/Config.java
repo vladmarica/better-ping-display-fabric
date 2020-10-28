@@ -13,28 +13,33 @@ public class Config {
   private static final int DEFAULT_PING_TEXT_COLOR = 0xA0A0A0;
   private static final String DEFAULT_PING_TEXT_FORMAT = "%dms";
 
+  private boolean autoColorPingText;
+  private boolean renderPingBars;
   private int textColor = DEFAULT_PING_TEXT_COLOR;
   private String textFormatString = DEFAULT_PING_TEXT_FORMAT;
 
   public Config(ConfigData confileFileFormat) {
-    if (confileFileFormat.textColor.startsWith("#")) {
+    if (confileFileFormat.pingTextColor.startsWith("#")) {
       try {
-        textColor = Integer.parseInt(confileFileFormat.textColor.substring(1), 16);
+        textColor = Integer.parseInt(confileFileFormat.pingTextColor.substring(1), 16);
       }
       catch (NumberFormatException ex) {
-        BetterPingDisplayMod.LOGGER.error("Config option 'textColor' is invalid - it must be a hex color code");
+        BetterPingDisplayMod.LOGGER.error("Config option 'pingTextColor' is invalid - it must be a hex color code");
       }
     }
     else {
-      BetterPingDisplayMod.LOGGER.error("Config option 'textColor' is invalid - it must be a hex color code");
+      BetterPingDisplayMod.LOGGER.error("Config option 'pingTextColor' is invalid - it must be a hex color code");
     }
 
-    if (confileFileFormat.textFormatString.contains("%d")) {
-      textFormatString = confileFileFormat.textFormatString;
+    if (confileFileFormat.pingTextFormatString.contains("%d")) {
+      textFormatString = confileFileFormat.pingTextFormatString;
     }
     else {
-      BetterPingDisplayMod.LOGGER.error("Config option 'textFormatString' is invalid - it needs to contain %d");
+      BetterPingDisplayMod.LOGGER.error("Config option 'pingTextFormatString' is invalid - it needs to contain %d");
     }
+
+    autoColorPingText = confileFileFormat.autoColorPingText;
+    renderPingBars = confileFileFormat.renderPingBars;
   }
 
   public Config() {
@@ -47,6 +52,14 @@ public class Config {
 
   public String getTextFormatString() {
     return this.textFormatString;
+  }
+
+  public boolean shouldAutoColorPingText() {
+    return this.autoColorPingText;
+  }
+
+  public boolean shouldRenderPingBars() {
+    return this.renderPingBars;
   }
 
   public static ConfigData loadConfigFile(File configFile) throws IOException {
@@ -78,9 +91,15 @@ public class Config {
 
   public static class ConfigData implements Serializable {
     @Expose
-    private String textColor = "#A0A0A0";
+    private boolean autoColorPingText = true;
 
     @Expose
-    private String textFormatString = "%dms";
+    private boolean renderPingBars = false;
+
+    @Expose
+    private String pingTextColor = "#A0A0A0";
+
+    @Expose
+    private String pingTextFormatString = "%dms";
   }
 }

@@ -8,10 +8,12 @@ import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.Text;
 
 public class PlayerListHudUtil {
+  /** Calls {@link net.minecraft.client.gui.hud.PlayerListHud#renderLatencyIcon}. */
   static void renderLatencyIcon(PlayerListHud hud, MatrixStack stack, int x, int offsetX, int y, PlayerListEntry player) {
     ((PlayerListHudAccessor) hud).invokeRenderLatencyIcon(stack, x, offsetX, y, player);
   }
 
+  /** Calls {@link net.minecraft.client.gui.hud.PlayerListHud#renderScoreboardObjective} */
   static void renderScoreboardObjective(PlayerListHud hud, MatrixStack stack, ScoreboardObjective obj, int i, String str, int j, int k, PlayerListEntry player) {
     ((PlayerListHudAccessor) hud).invokeRenderScoreboardObjective(obj, i, str, j, k, player, stack);
   }
