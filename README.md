@@ -1,6 +1,6 @@
 # Better Ping Display - Fabric Edition
 
-[![](https://cf.way2muchnoise.eu/full_406343_downloads.svg)](https://curseforge.com/minecraft/mc-mods/better-ping-display-fabric) 
+[![](http://cf.way2muchnoise.eu/full_406343_downloads.svg)](https://curseforge.com/minecraft/mc-mods/better-ping-display-fabric) 
 
 A [Fabric](https://fabricmc.net/) mod for Minecraft to display each player's ping in the player list as a number.
 
