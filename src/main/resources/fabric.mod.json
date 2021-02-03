@@ -14,7 +14,7 @@
   },
 
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/betterpingdisplay/icon.png",
 
   "environment": "client",
   "entrypoints": {
@@ -27,7 +27,7 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": ">=0.9.3",
     "minecraft": "1.16.x"
   },
   "suggests": {
