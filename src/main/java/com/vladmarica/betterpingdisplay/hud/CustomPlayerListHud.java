@@ -134,8 +134,8 @@ public final class CustomPlayerListHud {
       int aa = s + y * r + y * 5;
       int ab = t + ai * 9;
       DrawableHelper.fill(stack, aa, ab, aa + r, ab + 8, w);
-      RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-      RenderSystem.enableAlphaTest();
+      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+      //RenderSystem.enableAlphaTest();
       RenderSystem.enableBlend();
       RenderSystem.defaultBlendFunc();
       if (x < playerList.size()) {
@@ -198,7 +198,7 @@ public final class CustomPlayerListHud {
         } else {
           // If we don't render ping bars, we need to reset the render system color so the rest
           // of the player list renders properly
-          RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
       }
     }
