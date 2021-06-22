@@ -1,10 +1,10 @@
 plugins {
-	id 'fabric-loom' version '0.4-SNAPSHOT'
+	id 'fabric-loom' version '0.9.9'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -20,6 +20,7 @@ dependencies {
 
 processResources {
 	inputs.property "version", project.version
+	duplicatesStrategy = 'warn'
 
 	from(sourceSets.main.resources.srcDirs) {
 		include "fabric.mod.json"

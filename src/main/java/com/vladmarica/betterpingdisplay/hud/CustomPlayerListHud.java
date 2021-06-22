@@ -18,6 +18,7 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -134,8 +135,8 @@ public final class CustomPlayerListHud {
       int aa = s + y * r + y * 5;
       int ab = t + ai * 9;
       DrawableHelper.fill(stack, aa, ab, aa + r, ab + 8, w);
-      RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-      RenderSystem.enableAlphaTest();
+	  RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+	  RenderSystem.setShader(GameRenderer::getPositionColorShader);
       RenderSystem.enableBlend();
       RenderSystem.defaultBlendFunc();
       if (x < playerList.size()) {
@@ -145,7 +146,7 @@ public final class CustomPlayerListHud {
         if (displayPlayerIcons) {
           PlayerEntity playerEntity = mc.world.getPlayerByUuid(gameProfile.getId());
           boolean bl2 = playerEntity != null && playerEntity.isPartVisible(PlayerModelPart.CAPE) && ("Dinnerbone".equals(gameProfile.getName()) || "Grumm".equals(gameProfile.getName()));
-          mc.getTextureManager().bindTexture(player.getSkinTexture());
+          RenderSystem.setShaderTexture(0, player.getSkinTexture());
           ah = 8 + (bl2 ? 8 : 0);
           int ad = 8 * (bl2 ? -1 : 1);
           DrawableHelper.drawTexture(stack, aa, ab, 8, 8, 8.0F, (float)ah, 8, ad, 64, 64);
@@ -198,7 +199,7 @@ public final class CustomPlayerListHud {
         } else {
           // If we don't render ping bars, we need to reset the render system color so the rest
           // of the player list renders properly
-          RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+          RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
       }
     }
