@@ -10,11 +10,12 @@
   ],
   "contact": {
     "homepage": "https://github.com/vladmarica/better-ping-display-fabric",
-    "sources": "https://github.com/vladmarica/better-ping-display-fabric"
+    "sources": "https://github.com/vladmarica/better-ping-display-fabric",
+    "issues": "https://github.com/vladmarica/better-ping-display-fabric/issues"
   },
 
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/betterpingdisplay/icon.png",
 
   "environment": "client",
   "entrypoints": {
