@@ -32,7 +32,7 @@ public final class CustomPlayerListHud {
     textRenderer.drawWithShadow(matrixStack, pingString, (float) textX, (float) y, pingTextColor);
 
     if (config.shouldRenderPingBars()) {
-      ((PlayerListHudInvoker) hud).renderLatencyIcon(matrixStack, width, x, y, player);
+      ((PlayerListHudInvoker) hud).invokeRenderLatencyIcon(matrixStack, width, x, y, player);
     } else {
       // If we don't render ping bars, we need to reset the render system color so the rest
       // of the player list renders properly
