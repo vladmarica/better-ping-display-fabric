@@ -2,7 +2,7 @@ package com.vladmarica.betterpingdisplay.hud;
 
 import net.minecraft.util.math.MathHelper;
 
-public class PingColors {
+public final class PingColors {
   public static final int PING_START = 0;
   public static final int PING_MID = 150;
   public static final int PING_END = 300;
@@ -30,8 +30,10 @@ public class PingColors {
         computeOffset(PING_MID, PING_END, Math.min(ping, PING_END)));
   }
 
-  static float computeOffset(int start, int end, int value) {
+  private static float computeOffset(int start, int end, int value) {
     float offset =  (value - start) / (float) ( end - start);
     return MathHelper.clamp(offset, 0.0F, 1.0F);
   }
+
+  private PingColors() {}
 }

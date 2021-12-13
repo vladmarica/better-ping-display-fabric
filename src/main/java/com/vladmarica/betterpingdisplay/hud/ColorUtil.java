@@ -1,7 +1,8 @@
 package com.vladmarica.betterpingdisplay.hud;
 
-public class ColorUtil {
+import com.google.common.annotations.VisibleForTesting;
 
+public final class ColorUtil {
   public static int interpolate(int colorStart, int colorEnd, float offset) {
     if (offset < 0 || offset > 1) {
       throw new IllegalArgumentException("Offset must be between 0.0 and 1.0");
@@ -18,15 +19,20 @@ public class ColorUtil {
     return (newRed << 16) | (newGreen << 8) | newBlue;
   }
 
+  @VisibleForTesting
   static int getRed(int color) {
     return (color >> 16) & 0xFF;
   }
 
+  @VisibleForTesting
   static int getGreen(int color) {
     return (color >> 8) & 0xFF;
   }
 
+  @VisibleForTesting
   static int getBlue(int color) {
     return color & 0xFF;
   }
+
+  private ColorUtil() {}
 }

@@ -13,15 +13,15 @@ public class Config {
   private static final int DEFAULT_PING_TEXT_COLOR = 0xA0A0A0;
   private static final String DEFAULT_PING_TEXT_FORMAT = "%dms";
 
-  private boolean autoColorPingText;
-  private boolean renderPingBars;
+  private final boolean autoColorPingText;
+  private final boolean renderPingBars;
   private int textColor = DEFAULT_PING_TEXT_COLOR;
   private String textFormatString = DEFAULT_PING_TEXT_FORMAT;
 
-  public Config(ConfigData confileFileFormat) {
-    if (confileFileFormat.pingTextColor.startsWith("#")) {
+  public Config(ConfigData configFileFormat) {
+    if (configFileFormat.pingTextColor.startsWith("#")) {
       try {
-        textColor = Integer.parseInt(confileFileFormat.pingTextColor.substring(1), 16);
+        textColor = Integer.parseInt(configFileFormat.pingTextColor.substring(1), 16);
       }
       catch (NumberFormatException ex) {
         BetterPingDisplayMod.LOGGER.error("Config option 'pingTextColor' is invalid - it must be a hex color code");
@@ -31,15 +31,15 @@ public class Config {
       BetterPingDisplayMod.LOGGER.error("Config option 'pingTextColor' is invalid - it must be a hex color code");
     }
 
-    if (confileFileFormat.pingTextFormatString.contains("%d")) {
-      textFormatString = confileFileFormat.pingTextFormatString;
+    if (configFileFormat.pingTextFormatString.contains("%d")) {
+      textFormatString = configFileFormat.pingTextFormatString;
     }
     else {
       BetterPingDisplayMod.LOGGER.error("Config option 'pingTextFormatString' is invalid - it needs to contain %d");
     }
 
-    autoColorPingText = confileFileFormat.autoColorPingText;
-    renderPingBars = confileFileFormat.renderPingBars;
+    autoColorPingText = configFileFormat.autoColorPingText;
+    renderPingBars = configFileFormat.renderPingBars;
   }
 
   public Config() {

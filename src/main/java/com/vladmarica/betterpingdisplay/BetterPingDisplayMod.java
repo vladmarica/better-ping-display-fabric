@@ -43,7 +43,7 @@ public class BetterPingDisplayMod implements ModInitializer {
 	}
 
 	public Config getConfig() {
-		return this.config;
+		return config;
 	}
 
 	public static BetterPingDisplayMod instance() {

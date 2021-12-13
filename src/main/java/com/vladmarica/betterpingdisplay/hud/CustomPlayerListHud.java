@@ -15,22 +15,24 @@ public final class CustomPlayerListHud {
   private static final int PING_BARS_WIDTH = 11;
   private static final Config config = BetterPingDisplayMod.instance().getConfig();
 
-  public static void render(MinecraftClient client, PlayerListHud hud, MatrixStack matrixStack, int width, int x, int y, PlayerListEntry player) {
+  public static void renderPingDisplay(
+          MinecraftClient client, PlayerListHud hud, MatrixStack matrixStack, int width, int x, int y, PlayerListEntry player) {
     TextRenderer textRenderer = client.textRenderer;
 
     String pingString = String.format(config.getTextFormatString(), player.getLatency());
     int pingStringWidth = textRenderer.getWidth(pingString);
-
+    int pingTextColor = config.shouldAutoColorPingText() ? PingColors.getColor(player.getLatency()) : config.getTextColor();
     int textX = width + x - pingStringWidth + PING_TEXT_RENDER_OFFSET;
 
     if (!config.shouldRenderPingBars()) {
       textX += PING_BARS_WIDTH;
     }
 
-    int pingTextColor = config.shouldAutoColorPingText() ? PingColors.getColor(player.getLatency()) : config.getTextColor();
+    // Draw the ping text for the given player
     textRenderer.drawWithShadow(matrixStack, pingString, (float) textX, (float) y, pingTextColor);
+
     if (config.shouldRenderPingBars()) {
-      ((PlayerListHudInvoker) hud).renderLatencyText(matrixStack, width, x, y, player);
+      ((PlayerListHudInvoker) hud).renderLatencyIcon(matrixStack, width, x, y, player);
     } else {
       // If we don't render ping bars, we need to reset the render system color so the rest
       // of the player list renders properly
