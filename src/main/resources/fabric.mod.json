@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "betterpingdisplay",
-  "version": "1.1.1",
+  "version": "1.1.2",
 
   "name": "Better Ping Display",
   "description": "Shows the actual ping number instead of just bars in the player list!",
@@ -28,8 +28,8 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.12",
-    "minecraft": "1.18.x"
+    "fabricloader": ">=0.14",
+    "minecraft": "1.19.x"
   },
   "suggests": {}
 }
