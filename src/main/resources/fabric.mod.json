@@ -21,6 +21,9 @@
   "entrypoints": {
     "main": [
       "com.vladmarica.betterpingdisplay.BetterPingDisplayMod"
+    ],
+    "modmenu": [
+      "com.vladmarica.betterpingdisplay.ModMenuIntegration"
     ]
   },
   "mixins": [

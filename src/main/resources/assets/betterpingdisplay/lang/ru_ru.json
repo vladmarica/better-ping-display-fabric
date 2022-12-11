@@ -1,0 +1,22 @@
+{
+  "label.betterpingdisplay.on": "\u00A7aВкл",
+  "label.betterpingdisplay.off": "\u00A7eВыкл",
+
+  "category.betterpingdisplay.main": "Настройки BetterPingDisplay",
+
+  "options.betterpingdisplay.autoColorPingText": "Автоматический цвет пинга",
+  "options.betterpingdisplay.autoColorPingText.tooltip.1": "Следует ли изменять цвет пинга в зависимости от значения.",
+  "options.betterpingdisplay.autoColorPingText.tooltip.2": "Например, низкий пинг = зелёный, высокий пинг = красный",
+
+  "options.betterpingdisplay.renderPingBars": "Отображать пинг-бары",
+  "options.betterpingdisplay.renderPingBars.tooltip.1": "Следует ли также рисовать пинг-бары Minecraft по умолчанию",
+
+  "options.betterpingdisplay.pingTextColor": "Цвет пинга",
+  "options.betterpingdisplay.pingTextColor.tooltip.2": "Это работает только если автоматический цвет выключен",
+
+  "options.betterpingdisplay.pingTextFormat": "Формат пинга",
+  "options.betterpingdisplay.pingTextFormat.tooltip.1": "Формат для текста пинга",
+  "options.betterpingdisplay.pingTextFormat.tooltip.2": "Должен содержать `%d`, который будет заменён",
+  "options.betterpingdisplay.pingTextFormat.tooltip.3": "на текущее значение пинга игрока.",
+  "options.betterpingdisplay.pingTextFormat.error": "Этот параметр должен содержать `%d`"
+}
