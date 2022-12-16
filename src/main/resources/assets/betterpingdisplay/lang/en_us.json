@@ -2,7 +2,7 @@
   "label.betterpingdisplay.on": "\u00A7aOn",
   "label.betterpingdisplay.off": "\u00A7eOff",
 
-  "category.betterpingdisplay.main": "BetterPingDisplay Settings",
+  "title.betterpingdisplay.config": "BetterPingDisplay Settings",
 
   "options.betterpingdisplay.autoColorPingText": "Auto-color ping text",
   "options.betterpingdisplay.autoColorPingText.tooltip.1": "Whether to color a player's ping based on their latency.",

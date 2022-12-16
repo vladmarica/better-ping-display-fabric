@@ -2,7 +2,7 @@
   "label.betterpingdisplay.on": "\u00A7aВкл",
   "label.betterpingdisplay.off": "\u00A7eВыкл",
 
-  "category.betterpingdisplay.main": "Настройки BetterPingDisplay",
+  "title.betterpingdisplay.config": "Настройки BetterPingDisplay",
 
   "options.betterpingdisplay.autoColorPingText": "Автоматический цвет пинга",
   "options.betterpingdisplay.autoColorPingText.tooltip.1": "Следует ли изменять цвет пинга в зависимости от значения.",
