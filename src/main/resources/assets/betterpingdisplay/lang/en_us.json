@@ -1,0 +1,23 @@
+{
+  "label.betterpingdisplay.on": "\u00A7aOn",
+  "label.betterpingdisplay.off": "\u00A7eOff",
+
+  "title.betterpingdisplay.config": "BetterPingDisplay Settings",
+
+  "options.betterpingdisplay.autoColorPingText": "Auto-color ping text",
+  "options.betterpingdisplay.autoColorPingText.tooltip.1": "Whether to color a player's ping based on their latency.",
+  "options.betterpingdisplay.autoColorPingText.tooltip.2": "E.g, low latency = green, high latency = red",
+
+  "options.betterpingdisplay.renderPingBars": "Render ping bars",
+  "options.betterpingdisplay.renderPingBars.tooltip.1": "Whether to also draw the default Minecraft ping bars",
+
+  "options.betterpingdisplay.pingTextColor": "Ping text color",
+  "options.betterpingdisplay.pingTextColor.tooltip.1": "The ping text color to use.",
+  "options.betterpingdisplay.pingTextColor.tooltip.2": "It only works when the auto-color ping text is turned off",
+
+  "options.betterpingdisplay.pingTextFormat": "Ping text format",
+  "options.betterpingdisplay.pingTextFormat.tooltip.1": "The format string for ping text.",
+  "options.betterpingdisplay.pingTextFormat.tooltip.2": "Must include a `%d`, which will be replaced",
+  "options.betterpingdisplay.pingTextFormat.tooltip.3": "dynamically by the actual ping value.",
+  "options.betterpingdisplay.pingTextFormat.error": "This parameter must contain %d"
+}
