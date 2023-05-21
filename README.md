@@ -25,6 +25,7 @@ This mod's config file is `betterpingdisplay.json`. It contains the following op
 * **1.16.x**
 * **1.17.x**
 * **1.18.x**
+* **1.19.x**
 
 ## Requirements
 * [Fabric](https://fabricmc.net/)
