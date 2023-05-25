@@ -2,6 +2,7 @@ package com.vladmarica.betterpingdisplay.mixin;
 
 import com.vladmarica.betterpingdisplay.hud.CustomPlayerListHud;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
@@ -42,9 +43,9 @@ public abstract class PlayerListHudMixin {
 	 * {@link CustomPlayerListHud#renderPingDisplay}.
 	 */
 	@Redirect(method = "render",
-			at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/PlayerListHud.renderLatencyIcon(Lnet/minecraft/client/util/math/MatrixStack;IIILnet/minecraft/client/network/PlayerListEntry;)V"))
+			at = @At(value = "INVOKE", target = "net/minecraft/client/gui/hud/PlayerListHud.renderLatencyIcon(Lnet/minecraft/client/gui/DrawContext;IIILnet/minecraft/client/network/PlayerListEntry;)V"))
 	private void redirectRenderLatencyIconCall(
-			PlayerListHud instance, MatrixStack matrices, int width, int x, int y, @NotNull PlayerListEntry entry) {
-		CustomPlayerListHud.renderPingDisplay(client, instance, matrices, width, x, y, entry);
+			PlayerListHud instance, DrawContext context, int width, int x, int y, @NotNull PlayerListEntry entry) {
+		CustomPlayerListHud.renderPingDisplay(client, instance, context, width, x, y, entry);
 	}
 }

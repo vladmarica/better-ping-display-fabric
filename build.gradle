@@ -22,7 +22,7 @@ processResources {
 	duplicatesStrategy = 'WARN'
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version, "minecraft_version": project.minecraft_version
+		expand "version": project.version, "minecraft_version": "~1.20-"
 	}
 }
 

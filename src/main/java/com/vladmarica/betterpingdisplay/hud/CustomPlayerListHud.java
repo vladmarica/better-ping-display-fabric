@@ -6,6 +6,7 @@ import com.vladmarica.betterpingdisplay.Config;
 import com.vladmarica.betterpingdisplay.mixin.PlayerListHudInvoker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
@@ -16,12 +17,11 @@ public final class CustomPlayerListHud {
   private static final Config config = BetterPingDisplayMod.instance().getConfig();
 
   public static void renderPingDisplay(
-          MinecraftClient client, PlayerListHud hud, MatrixStack matrixStack, int width, int x, int y, PlayerListEntry player) {
-    TextRenderer textRenderer = client.textRenderer;
-
+      MinecraftClient client, PlayerListHud hud, DrawContext context, int width, int x, int y, PlayerListEntry player) {
     String pingString = String.format(config.getTextFormatString(), player.getLatency());
-    int pingStringWidth = textRenderer.getWidth(pingString);
-    int pingTextColor = config.shouldAutoColorPingText() ? PingColors.getColor(player.getLatency()) : config.getTextColor();
+    int pingStringWidth = client.textRenderer.getWidth(pingString);
+    int pingTextColor = config.shouldAutoColorPingText()
+        ? PingColors.getColor(player.getLatency()) : config.getTextColor();
     int textX = width + x - pingStringWidth + PING_TEXT_RENDER_OFFSET;
 
     if (!config.shouldRenderPingBars()) {
@@ -29,10 +29,10 @@ public final class CustomPlayerListHud {
     }
 
     // Draw the ping text for the given player
-    textRenderer.drawWithShadow(matrixStack, pingString, (float) textX, (float) y, pingTextColor);
+    context.drawTextWithShadow(client.textRenderer, pingString, textX, y, pingTextColor);
 
     if (config.shouldRenderPingBars()) {
-      ((PlayerListHudInvoker) hud).invokeRenderLatencyIcon(matrixStack, width, x, y, player);
+      ((PlayerListHudInvoker) hud).invokeRenderLatencyIcon(context, width, x, y, player);
     } else {
       // If we don't render ping bars, we need to reset the render system color so the rest
       // of the player list renders properly
