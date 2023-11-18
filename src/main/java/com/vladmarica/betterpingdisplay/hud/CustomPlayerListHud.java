@@ -5,11 +5,9 @@ import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
 import com.vladmarica.betterpingdisplay.Config;
 import com.vladmarica.betterpingdisplay.mixin.PlayerListHudInvoker;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.util.math.MatrixStack;
 
 public final class CustomPlayerListHud {
   private static final int PING_TEXT_RENDER_OFFSET = -13;
