@@ -15,7 +15,7 @@ import java.util.Set;
 public class Config {
   private static final int DEFAULT_PING_TEXT_COLOR = 0xA0A0A0;
   private static final String DEFAULT_PING_TEXT_FORMAT = "%dms";
-  private static final Set<Integer> DEFAULT_PING_BLACKLIST = new HashSet<>(List.of(100000));
+  private static final Set<Integer> DEFAULT_PING_BLACKLIST = new HashSet<>(List.of(0, 100000));
 
   private final boolean autoColorPingText;
   private final boolean renderPingBars;
