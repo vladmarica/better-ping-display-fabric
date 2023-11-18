@@ -18,7 +18,9 @@ public final class CustomPlayerListHud {
 
   public static void renderPingDisplay(
       MinecraftClient client, PlayerListHud hud, DrawContext context, int width, int x, int y, PlayerListEntry player) {
-    String pingString = String.format(config.getTextFormatString(), player.getLatency());
+    String pingString = config.shouldRenderThisPing(player.getLatency())
+            ? String.format(config.getTextFormatString(), player.getLatency()) : "";
+
     int pingStringWidth = client.textRenderer.getWidth(pingString);
     int pingTextColor = config.shouldAutoColorPingText()
         ? PingColors.getColor(player.getLatency()) : config.getTextColor();
