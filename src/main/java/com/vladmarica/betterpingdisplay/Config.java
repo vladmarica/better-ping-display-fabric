@@ -17,6 +17,8 @@ public class Config {
   private final boolean renderPingBars;
   private int textColor = DEFAULT_PING_TEXT_COLOR;
   private String textFormatString = DEFAULT_PING_TEXT_FORMAT;
+  private String[] blacklistServers = {};
+  private String[] blacklistPlayers = {};
 
   public Config(ConfigData configFileFormat) {
     if (configFileFormat.pingTextColor.startsWith("#")) {
@@ -40,6 +42,8 @@ public class Config {
 
     autoColorPingText = configFileFormat.autoColorPingText;
     renderPingBars = configFileFormat.renderPingBars;
+    blacklistServers = configFileFormat.blacklistServers;
+    blacklistPlayers = configFileFormat.blacklistPlayers;
   }
 
   public Config() {
@@ -60,6 +64,14 @@ public class Config {
 
   public boolean shouldRenderPingBars() {
     return this.renderPingBars;
+  }
+
+  public String[] getBlacklistServers() {
+    return this.blacklistServers;
+  }
+
+  public String[] getBlacklistPlayers() {
+    return this.blacklistPlayers;
   }
 
   public static ConfigData loadConfigFile(File configFile) throws IOException {
@@ -101,5 +113,9 @@ public class Config {
 
     @Expose
     private String pingTextFormatString = "%dms";
+    @Expose
+    private String[] blacklistServers = {};
+    @Expose
+    private String[] blacklistPlayers = {};
   }
 }
