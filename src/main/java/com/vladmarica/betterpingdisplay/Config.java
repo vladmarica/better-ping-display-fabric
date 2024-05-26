@@ -8,15 +8,20 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Config {
   private static final int DEFAULT_PING_TEXT_COLOR = 0xA0A0A0;
   private static final String DEFAULT_PING_TEXT_FORMAT = "%dms";
+  private static final Set<Integer> DEFAULT_PING_BLACKLIST = new HashSet<>(List.of(0, 100000));
 
   private final boolean autoColorPingText;
   private final boolean renderPingBars;
   private int textColor = DEFAULT_PING_TEXT_COLOR;
   private String textFormatString = DEFAULT_PING_TEXT_FORMAT;
+  private Set<Integer> pingBlacklist = DEFAULT_PING_BLACKLIST;
 
   public Config(ConfigData configFileFormat) {
     if (configFileFormat.pingTextColor.startsWith("#")) {
@@ -40,6 +45,7 @@ public class Config {
 
     autoColorPingText = configFileFormat.autoColorPingText;
     renderPingBars = configFileFormat.renderPingBars;
+    pingBlacklist = configFileFormat.pingBlacklist;
   }
 
   public Config() {
@@ -60,6 +66,10 @@ public class Config {
 
   public boolean shouldRenderPingBars() {
     return this.renderPingBars;
+  }
+
+  public boolean shouldRenderThisPing(int ping) {
+    return !pingBlacklist.contains(ping);
   }
 
   public static ConfigData loadConfigFile(File configFile) throws IOException {
@@ -101,5 +111,8 @@ public class Config {
 
     @Expose
     private String pingTextFormatString = "%dms";
+
+    @Expose
+    private Set<Integer> pingBlacklist = DEFAULT_PING_BLACKLIST;
   }
 }

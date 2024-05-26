@@ -5,11 +5,9 @@ import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
 import com.vladmarica.betterpingdisplay.Config;
 import com.vladmarica.betterpingdisplay.mixin.PlayerListHudInvoker;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.util.math.MatrixStack;
 
 public final class CustomPlayerListHud {
   private static final int PING_TEXT_RENDER_OFFSET = -13;
@@ -18,7 +16,9 @@ public final class CustomPlayerListHud {
 
   public static void renderPingDisplay(
       MinecraftClient client, PlayerListHud hud, DrawContext context, int width, int x, int y, PlayerListEntry player) {
-    String pingString = String.format(config.getTextFormatString(), player.getLatency());
+    String pingString = config.shouldRenderThisPing(player.getLatency())
+            ? String.format(config.getTextFormatString(), player.getLatency()) : "";
+
     int pingStringWidth = client.textRenderer.getWidth(pingString);
     int pingTextColor = config.shouldAutoColorPingText()
         ? PingColors.getColor(player.getLatency()) : config.getTextColor();
