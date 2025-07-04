@@ -1,15 +1,12 @@
 package com.vladmarica.betterpingdisplay.hud;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
 import com.vladmarica.betterpingdisplay.Config;
 import com.vladmarica.betterpingdisplay.mixin.PlayerListHudInvoker;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.util.math.MatrixStack;
 
 public final class CustomPlayerListHud {
   private static final int PING_TEXT_RENDER_OFFSET = -13;
@@ -29,14 +26,10 @@ public final class CustomPlayerListHud {
     }
 
     // Draw the ping text for the given player
-    context.drawTextWithShadow(client.textRenderer, pingString, textX, y, pingTextColor);
+    context.drawTextWithShadow(client.textRenderer, pingString, textX, y, pingTextColor | 0xFF000000);
 
     if (config.shouldRenderPingBars()) {
       ((PlayerListHudInvoker) hud).invokeRenderLatencyIcon(context, width, x, y, player);
-    } else {
-      // If we don't render ping bars, we need to reset the render system color so the rest
-      // of the player list renders properly
-      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
   }
 }
