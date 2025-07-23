@@ -5,3 +5,4 @@ out/
 run/
 logs/
 src/main/java/net/fabricmc/*
+.vscode/
