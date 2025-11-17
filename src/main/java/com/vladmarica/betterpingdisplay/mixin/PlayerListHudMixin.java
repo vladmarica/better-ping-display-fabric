@@ -5,17 +5,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.PlayerListHud;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardObjective;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerListHud.class)
@@ -29,12 +25,13 @@ public abstract class PlayerListHudMixin {
 	private MinecraftClient client;
 
 	/**
-	 * Increases the int constant {@code 13} in the {@link PlayerListHud#render} method by
-	 * {@value #PLAYER_SLOT_EXTRA_WIDTH}. This constant is used to define the width of the "slots" in the player list.
-	 * In order to fit the ping text, this needs to be increased.
+	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the scoreboard column width calculated inside
+	 * {@link PlayerListHud#render}. The scoreboard column width participates in the overall slot width even when no
+	 * scoreboard is shown, so this keeps our ping text area without rewriting literal constants that other mods rely
+	 * on.
 	 */
-	@ModifyConstant(method = "render", constant = @Constant(intValue = 13))
-	private int modifySlotWidthConstant(int original) {
+	@ModifyVariable(method = "render", at = @At(value = "STORE"), index = 14, require = 0)
+	private int expandScoreboardColumnWidth(int original) {
 		return original + PLAYER_SLOT_EXTRA_WIDTH;
 	}
 
