@@ -25,13 +25,11 @@ public abstract class PlayerListHudMixin {
 	private MinecraftClient client;
 
 	/**
-	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the scoreboard column width calculated inside
-	 * {@link PlayerListHud#render}. The scoreboard column width participates in the overall slot width even when no
-	 * scoreboard is shown, so this keeps our ping text area without rewriting literal constants that other mods rely
-	 * on.
+	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the per-player slot width calculated in
+	 * {@link PlayerListHud#render}.
 	 */
-	@ModifyVariable(method = "render", at = @At(value = "STORE"), index = 14, require = 0)
-	private int expandScoreboardColumnWidth(int original) {
+	@ModifyVariable(method = "render", at = @At(value = "STORE"), index = 15, require = 0)
+	private int expandPlayerSlotWidth(int original) {
 		return original + PLAYER_SLOT_EXTRA_WIDTH;
 	}
 
