@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin {
@@ -25,11 +26,16 @@ public abstract class PlayerListHudMixin {
 	private MinecraftClient client;
 
 	/**
-	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the per-player slot width calculated in
-	 * {@link PlayerListHud#render}.
+	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the max name width (var 8) loaded after the loop in
+	 * {@link PlayerListHud#render}. This ensures that both the column count calculation and the slot width
+	 * calculation account for the extra width required for the ping display.
+	 * We use @ModifyVariable on the LOAD opcode to avoid conflicts with other mods that might modify the
+	 * constant 13 (which caused crashes in the past).
 	 */
-	@ModifyVariable(method = "render", at = @At(value = "STORE"), index = 15, require = 0)
-	private int expandPlayerSlotWidth(int original) {
+	@ModifyVariable(method = "render", at = @At(value = "LOAD"), index = 8,
+			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/scoreboard/ScoreboardObjective;getRenderType()Lnet/minecraft/scoreboard/ScoreboardCriterion$RenderType;")),
+			require = 0)
+	private int expandMaxNameWidth(int original) {
 		return original + PLAYER_SLOT_EXTRA_WIDTH;
 	}
 
