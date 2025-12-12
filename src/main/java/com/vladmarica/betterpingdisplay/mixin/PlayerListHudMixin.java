@@ -26,16 +26,16 @@ public abstract class PlayerListHudMixin {
 	private MinecraftClient client;
 
 	/**
-	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the max name width (var 8) loaded after the loop in
-	 * {@link PlayerListHud#render}. This ensures that both the column count calculation and the slot width
-	 * calculation account for the extra width required for the ping display.
-	 * We use @ModifyVariable on the LOAD opcode to avoid conflicts with other mods that might modify the
-	 * constant 13 (which caused crashes in the past).
+	 * Adds {@value #PLAYER_SLOT_EXTRA_WIDTH} to the slot width variable (m, index 15) immediately after it is calculated.
+	 * This expands the total slot width to accommodate the ping display.
+	 * We target the STORE opcode of the width variable, which happens after the constant 13 is loaded.
+	 * We use a slice to ensure we target the correct STORE (after the loop where var 15 is reused).
 	 */
-	@ModifyVariable(method = "render", at = @At(value = "LOAD"), index = 8,
-			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/scoreboard/ScoreboardObjective;getRenderType()Lnet/minecraft/scoreboard/ScoreboardCriterion$RenderType;")),
+	@ModifyVariable(method = "render", at = @At(value = "STORE", ordinal = 0),
+			slice = @Slice(from = @At(value = "CONSTANT", args = "intValue=13")),
+			index = 15,
 			require = 0)
-	private int expandMaxNameWidth(int original) {
+	private int expandSlotWidth(int original) {
 		return original + PLAYER_SLOT_EXTRA_WIDTH;
 	}
 
