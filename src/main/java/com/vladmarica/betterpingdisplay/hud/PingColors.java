@@ -7,12 +7,18 @@ public final class PingColors {
   public static final int PING_MID = 150;
   public static final int PING_END = 300;
 
+  public static final int ALPHA_MASK = 0xFF000000;
+
   public static final int COLOR_GREY = 0x535353;
   public static final int COLOR_START = 0x00E676;
   public static final int COLOR_MID = 0xD6CD30;
   public static final int COLOR_END = 0xE53935;
 
   public static int getColor(int ping) {
+    return getColorInternal(ping) | ALPHA_MASK;
+  }
+
+  private static int getColorInternal(int ping) {
     if (ping < PING_START) {
       return COLOR_GREY;
     }

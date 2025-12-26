@@ -28,8 +28,8 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.16",
-    "minecraft": "${minecraft_version}"
+    "fabricloader": ">=0.17",
+    "minecraft": "${minecraft_compat_version}"
   },
   "suggests": {}
 }
