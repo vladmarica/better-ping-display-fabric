@@ -29,7 +29,7 @@
 
   "depends": {
     "fabricloader": ">=0.17",
-    "minecraft": "${minecraft_compat_version}"
+    "minecraft": "${minecraft_version}"
   },
   "suggests": {}
 }
