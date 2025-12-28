@@ -1,12 +1,8 @@
 plugins {
-	id 'fabric-loom' version '1.12-SNAPSHOT'
+	id 'fabric-loom' version '1.14-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
-
-archivesBaseName = project.archives_base_name
 version = "${minecraft_version}-${project.mod_version}"
 group = project.maven_group
 minecraft_version = project.minecraft_version
@@ -26,6 +22,11 @@ processResources {
 		expand "version": project.mod_version,
 				"minecraft_version": minecraft_version
 	}
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.withType(JavaCompile) {
