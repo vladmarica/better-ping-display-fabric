@@ -1,97 +1,84 @@
 package com.vladmarica.betterpingdisplay;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
-import com.vladmarica.betterpingdisplay.hud.PingColors;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 public class Config {
   private static final int DEFAULT_PING_TEXT_COLOR = 0xFFA0A0A0;
   private static final String DEFAULT_PING_TEXT_FORMAT = "%dms";
 
-  private final boolean autoColorPingText;
-  private final boolean renderPingBars;
-  private int textColor = DEFAULT_PING_TEXT_COLOR;
-  private String textFormatString = DEFAULT_PING_TEXT_FORMAT;
+  private static final Gson gson = new GsonBuilder()
+          .setPrettyPrinting()
+          .registerTypeAdapter(Color.class, new ColorJsonAdapter())
+          .create();
 
-  public Config(ConfigData configFileFormat) {
-    if (configFileFormat.pingTextColor.startsWith("#")) {
-      try {
-        textColor = Integer.parseInt(configFileFormat.pingTextColor.substring(1), 16) | PingColors.ALPHA_MASK;
-      }
-      catch (NumberFormatException ex) {
-        BetterPingDisplayMod.LOGGER.error("Config option 'pingTextColor' is invalid - it must be a hex color code");
-      }
-    }
-    else {
-      BetterPingDisplayMod.LOGGER.error("Config option 'pingTextColor' is invalid - it must be a hex color code");
-    }
+  private final ConfigData data;
 
-    if (configFileFormat.pingTextFormatString.contains("%d")) {
-      textFormatString = configFileFormat.pingTextFormatString;
-    }
-    else {
-      BetterPingDisplayMod.LOGGER.error("Config option 'pingTextFormatString' is invalid - it needs to contain %d");
-    }
+  private Config(ConfigData configData) {
+    data = configData;
 
-    autoColorPingText = configFileFormat.autoColorPingText;
-    renderPingBars = configFileFormat.renderPingBars;
+    if (!data.pingTextFormatString.contains("%d")) {
+      data.pingTextFormatString = DEFAULT_PING_TEXT_FORMAT;
+    }
   }
 
-  public Config() {
-    this(new ConfigData());
+  public Color getTextColor() {
+    return data.pingTextColor;
   }
 
-  public int getTextColor() {
-    return this.textColor;
+  public void setTextColor(Color color) {
+    data.pingTextColor = color;
   }
 
   public String getTextFormatString() {
-    return this.textFormatString;
+    return data.pingTextFormatString;
+  }
+
+  public void setTextFormatString(String textFormatString) {
+    data.pingTextFormatString = textFormatString;
   }
 
   public boolean shouldAutoColorPingText() {
-    return this.autoColorPingText;
+    return data.autoColorPingText;
+  }
+
+  public void setShouldAutoColorPingText(boolean shouldAutoColorPingText) {
+    data.autoColorPingText = shouldAutoColorPingText;
   }
 
   public boolean shouldRenderPingBars() {
-    return this.renderPingBars;
+    return data.renderPingBars;
   }
 
-  public static ConfigData loadConfigFile(File configFile) throws IOException {
-    FileReader reader = null;
-    try {
-      Gson gson = new Gson();
-      reader = new FileReader(configFile);
-      return gson.fromJson(reader, ConfigData.class);
-    }
-    finally {
-      if (reader != null) {
-        reader.close();
-      }
-    }
+  public void setShouldRenderPingBars(boolean shouldRenderPingBars) {
+    data.renderPingBars = shouldRenderPingBars;
   }
 
-  public static void writeConfigFile(File configFile, ConfigData data) throws IOException {
-    FileWriter writer = null;
-    try {
-      Gson gson = new GsonBuilder().setPrettyPrinting().create();
-      writer = new FileWriter(configFile);
+  public void writeToFile(File file) throws IOException {
+    try (FileWriter writer = new FileWriter(file)) {
       writer.write(gson.toJson(data));
-    } finally {
-      if (writer != null) {
-        writer.close();
-      }
     }
   }
 
-  public static class ConfigData implements Serializable {
+  public static Config fromDefault() {
+    return new Config(new ConfigData());
+  }
+
+  public static Config fromFile(File file) throws IOException {
+    try (FileReader reader = new FileReader(file)) {
+      return new Config(gson.fromJson(reader, ConfigData.class));
+    }
+  }
+
+  private static class ConfigData implements Serializable {
     @Expose
     private boolean autoColorPingText = true;
 
@@ -99,9 +86,23 @@ public class Config {
     private boolean renderPingBars = false;
 
     @Expose
-    private String pingTextColor = "#A0A0A0";
+    private Color pingTextColor = new Color(DEFAULT_PING_TEXT_COLOR);
 
     @Expose
-    private String pingTextFormatString = "%dms";
+    private String pingTextFormatString = DEFAULT_PING_TEXT_FORMAT;
+  }
+
+  private static class ColorJsonAdapter implements JsonDeserializer<Color>, JsonSerializer<Color> {
+    @Override
+    public Color deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+      String str = json.getAsJsonPrimitive().getAsString();
+      return new Color(Integer.parseInt(str.substring(1), 16));
+    }
+
+    @Override
+    public JsonElement serialize(Color src, Type typeOfSrc, JsonSerializationContext context) {
+      return new JsonPrimitive(String.format("#%02x%02x%02x", src.getRed(), src.getGreen(), src.getBlue()));
+    }
   }
 }

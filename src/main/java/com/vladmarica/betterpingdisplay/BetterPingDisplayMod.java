@@ -1,7 +1,7 @@
 package com.vladmarica.betterpingdisplay;
 
-import com.vladmarica.betterpingdisplay.Config.ConfigData;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -14,28 +14,28 @@ public class BetterPingDisplayMod implements ModInitializer {
 	private static final String CONFIG_FILE_NAME = MODID + ".json";
 	private static BetterPingDisplayMod INSTANCE;
 
-	private Config config = new Config();
+	private Path configFilePath;
+	private Config config = Config.fromDefault();
 
 	@Override
 	public void onInitialize() {
 		INSTANCE = this;
 
-		Path configFilePath = FabricLoader.getInstance().getConfigDir().resolve(CONFIG_FILE_NAME);
+		configFilePath = FabricLoader.getInstance().getConfigDir().resolve(CONFIG_FILE_NAME);
 		File configFile = configFilePath.toFile();
 		if (configFile.exists()) {
 			try {
-				ConfigData data = Config.loadConfigFile(configFile);
-				config = new Config(data);
-				Config.writeConfigFile(configFile, data);
-			} catch (Exception ex) {
-				LOGGER.error("Failed to load config file, using default. Error: {}", ex.getMessage());
+				config = Config.fromFile(configFile);
+				config.writeToFile(configFile); // Re-write to file to add new fields
+			} catch (IOException ex) {
+				LOGGER.error("Failed to load config file", ex);
 			}
 		} else {
 			try {
 				LOGGER.warn("Could not find config file, creating a default one");
-				Config.writeConfigFile(configFile, new ConfigData());
-			} catch (Exception ex) {
-				LOGGER.error("Failed to write default config file. Error: {}", ex.getMessage());
+				config.writeToFile(configFile);
+			} catch (IOException ex) {
+				LOGGER.error("Failed to write default config file", ex);
 			}
 		}
 
@@ -44,6 +44,10 @@ public class BetterPingDisplayMod implements ModInitializer {
 
 	public Config getConfig() {
 		return config;
+	}
+
+	public Path getConfigFilePath() {
+		return configFilePath;
 	}
 
 	public static BetterPingDisplayMod instance() {

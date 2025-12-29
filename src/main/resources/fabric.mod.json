@@ -8,6 +8,7 @@
   "authors": [
     "Quintinity"
   ],
+
   "contact": {
     "homepage": "https://github.com/vladmarica/better-ping-display-fabric",
     "sources": "https://github.com/vladmarica/better-ping-display-fabric",
@@ -21,6 +22,9 @@
   "entrypoints": {
     "main": [
       "com.vladmarica.betterpingdisplay.BetterPingDisplayMod"
+    ],
+    "modmenu": [
+      "com.vladmarica.betterpingdisplay.integ.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -31,5 +35,14 @@
     "fabricloader": ">=0.17",
     "minecraft": "${minecraft_version}"
   },
-  "suggests": {}
+
+  "suggests": {
+    "yet_another_config_lib_v3": ">=3.8.1+1.21.11-fabric"
+  },
+
+  "custom": {
+    "modmenu": {
+      "update_checker": false
+    }
+  }
 }

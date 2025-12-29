@@ -18,7 +18,7 @@ public final class CustomPlayerListHud {
     String pingString = String.format(config.getTextFormatString(), player.getLatency());
     int pingStringWidth = client.textRenderer.getWidth(pingString);
     int pingTextColor = config.shouldAutoColorPingText()
-        ? PingColors.getColor(player.getLatency()) : config.getTextColor();
+        ? PingColors.getColor(player.getLatency()) : config.getTextColor().getRGB();
     int textX = width + x - pingStringWidth + PING_TEXT_RENDER_OFFSET;
 
     if (!config.shouldRenderPingBars()) {
