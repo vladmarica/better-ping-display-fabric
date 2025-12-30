@@ -7,19 +7,17 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
-import dev.isxander.yacl3.gui.controllers.string.IStringController;
 import dev.isxander.yacl3.gui.controllers.string.StringController;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.vladmarica.betterpingdisplay.BetterPingDisplayMod.LOGGER;
+import static net.minecraft.text.Text.translatable;
 
-public class YaclConfigScreenFactory implements ConfigScreenFactory {
+public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
 
     @Override
     public Screen create(Screen parent) {
@@ -27,15 +25,16 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory {
         Config config = mod.getConfig();
 
         Option<Color> pingTextColorOption =  Option.<Color>createBuilder()
-                .name(Text.literal("pingTextColor"))
-                .description(OptionDescription.of(Text.literal("Has no effect if \"autoColorPingText\" is enabled")))
+                .name(translatable("betterpingdisplay.settings.pingTextColor"))
+                .description(OptionDescription.of(translatable("betterpingdisplay.settings.pingTextColor.description")))
                 .binding(config.getTextColor(), config::getTextColor, config::setTextColor)
                 .controller(o -> ColorControllerBuilder.create(o).allowAlpha(false))
                 .available(!config.shouldAutoColorPingText())
                 .build();
 
         Option<Boolean> autoColorPingTextOption = Option.<Boolean>createBuilder()
-                .name(Text.literal("autoColorPingText"))
+                .name(translatable("betterpingdisplay.settings.autoColorPingText"))
+                .description(OptionDescription.of(translatable("betterpingdisplay.settings.autoColorPingText.description")))
                 .binding(
                         config.shouldAutoColorPingText(),
                         config::shouldAutoColorPingText,
@@ -45,7 +44,8 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory {
                 .build();
 
         Option<String> textFormatOption = Option.<String>createBuilder()
-                .name(Text.literal("pingTextFormat"))
+                .name(translatable("betterpingdisplay.settings.pingTextFormatString"))
+                .description(OptionDescription.of(translatable("betterpingdisplay.settings.pingTextFormatString.description")))
                 .binding(
                         config.getTextFormatString(),
                         config::getTextFormatString,
@@ -55,7 +55,8 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory {
                 .build();
 
         Option<Boolean> renderPingBarsOption = Option.<Boolean>createBuilder()
-                .name(Text.literal("renderPingBars"))
+                .name(translatable("betterpingdisplay.settings.renderPingBars"))
+                .description(OptionDescription.of(translatable("betterpingdisplay.settings.renderPingBars.description")))
                 .binding(
                         config.shouldRenderPingBars(),
                         config::shouldRenderPingBars,
@@ -64,9 +65,9 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory {
                 .build();
 
         return YetAnotherConfigLib.createBuilder()
-                .title(Text.literal("Better Ping Display"))
+                .title(translatable("betterpingdisplay.settings.title"))
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.literal("Better Ping Display"))
+                        .name(translatable("betterpingdisplay.settings.title"))
                         .option(autoColorPingTextOption)
                         .option(pingTextColorOption)
                         .option(textFormatOption)

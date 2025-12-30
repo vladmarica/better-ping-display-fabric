@@ -16,10 +16,16 @@ This mod's config file is `betterpingdisplay.json`. It contains the following op
 
 | Option  | Default Value  | Description  |
 |---|---|---|
-| autoColorPingText  | `true` | Whether to color a player's ping based on their latency. E.g, low latency = green, high latency = red |
+| autoColorPingText  | `true` | Whether to color a player's ping based on their latency. |
 | renderPingBars  | `false` | Whether to also draw the default Minecraft ping bars  |
 | pingTextColor  | `#A0A0A0`  | The ping text color to use. Only works whens `autoColorPingText` is false |
 | pingTextFormatString | `%dms` | The format string for ping text. Must include a `%d`, which will be replaced dynamically by the actual ping value.
+
+> As of mod version **1.2.0**, a GUI configuration screen is available if you have
+[Mod Menu](https://modrinth.com/mod/modmenu) and [YACL](https://modrinth.com/mod/yacl) installed. These are optional dependencies
+> and this mod will continue to work normally without them installed. 
+
+![](https://i.imgur.com/cX02gRg.png)
 
 ## Supported Minecraft Versions
 * **1.15.x**
