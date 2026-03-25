@@ -37,7 +37,7 @@
   },
 
   "suggests": {
-    "yet_another_config_lib_v3": ">=3.8.1+1.21.11-fabric"
+    "yet_another_config_lib_v3": ">=3.9.0+26.1-fabric-fabric"
   },
 
   "custom": {
