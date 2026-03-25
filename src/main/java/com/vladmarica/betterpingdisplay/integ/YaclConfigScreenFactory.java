@@ -7,15 +7,15 @@ import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
+import dev.isxander.yacl3.gui.controllers.string.IStringController;
 import dev.isxander.yacl3.gui.controllers.string.StringController;
-import net.minecraft.client.gui.screen.Screen;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.util.function.Predicate;
+import net.minecraft.client.gui.screens.Screen;
 
 import static com.vladmarica.betterpingdisplay.BetterPingDisplayMod.LOGGER;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.network.chat.Component.translatable;
 
 public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
 
@@ -51,7 +51,7 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
                         config::getTextFormatString,
                         config::setTextFormatString)
                 .controller(StringControllerBuilder::create)
-                .customController((o) -> new ValidatedStringController(o, (s) -> s.contains("%d")))
+                .customController((o) -> new ValidatedStringController(o, s -> s.contains("%d")))
                 .build();
 
         Option<Boolean> renderPingBarsOption = Option.<Boolean>createBuilder()
@@ -84,12 +84,20 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
                 .generateScreen(parent);
     }
 
-    private static class ValidatedStringController extends StringController {
-        private final Predicate<String> validator;
+    private record ValidatedStringController(Option<String> option, Predicate<String> validator) implements IStringController<String> {
+        @Override
+        public Option<String> option() {
+            return option;
+        }
 
-        public ValidatedStringController(Option<String> option, Predicate<String> validator) {
-            super(option);
-            this.validator = validator;
+        @Override
+        public String getString() {
+            return option().pendingValue();
+        }
+
+        @Override
+        public void setFromString(String value) {
+            option().requestSet(value);
         }
 
         @Override

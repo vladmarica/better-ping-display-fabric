@@ -6,8 +6,8 @@
     "mixins": [
     ],
     "client": [
-        "PlayerListHudInvoker",
-        "PlayerListHudMixin"
+        "PlayerTabOverlayInvoker",
+        "PlayerTabOverlayMixin"
     ],
     "injectors": {
         "defaultRequire": 1
