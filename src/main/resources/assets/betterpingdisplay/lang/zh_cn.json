@@ -1,0 +1,11 @@
+{
+  "betterpingdisplay.settings.title": "更好的延迟显示 设置",
+  "betterpingdisplay.settings.autoColorPingText": "自动为延迟文本着色",
+  "betterpingdisplay.settings.autoColorPingText.description": "是否根据玩家的延迟为其延迟文本着色。例如：低延迟 = 绿色，高延迟 = 红色",
+  "betterpingdisplay.settings.renderPingBars": "显示延迟条",
+  "betterpingdisplay.settings.renderPingBars.description": "是否同时显示 Minecraft 默认的延迟条。",
+  "betterpingdisplay.settings.pingTextColor": "延迟文本颜色",
+  "betterpingdisplay.settings.pingTextColor.description": "延迟文本使用的颜色。仅在“自动为延迟文本着色”关闭时生效。",
+  "betterpingdisplay.settings.pingTextFormatString": "延迟文本格式字符串",
+  "betterpingdisplay.settings.pingTextFormatString.description": "延迟文本的格式字符串。必须包含一个“%d”，它将被实际的延迟值动态替换。"
+}

@@ -8,14 +8,13 @@ import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.gui.controllers.string.StringController;
-import net.minecraft.client.gui.screen.Screen;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.function.Predicate;
+import net.minecraft.client.gui.screens.Screen;
 
 import static com.vladmarica.betterpingdisplay.BetterPingDisplayMod.LOGGER;
-import static net.minecraft.text.Text.translatable;
+import static net.minecraft.network.chat.Component.translatable;
 
 public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
 
@@ -24,7 +23,7 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
         BetterPingDisplayMod mod = BetterPingDisplayMod.instance();
         Config config = mod.getConfig();
 
-        Option<Color> pingTextColorOption =  Option.<Color>createBuilder()
+        Option<Color> pingTextColorOption = Option.<Color>createBuilder()
                 .name(translatable("betterpingdisplay.settings.pingTextColor"))
                 .description(OptionDescription.of(translatable("betterpingdisplay.settings.pingTextColor.description")))
                 .binding(config.getTextColor(), config::getTextColor, config::setTextColor)
@@ -46,13 +45,12 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
         Option<String> textFormatOption = Option.<String>createBuilder()
                 .name(translatable("betterpingdisplay.settings.pingTextFormatString"))
                 .description(OptionDescription.of(translatable("betterpingdisplay.settings.pingTextFormatString.description")))
-                .binding(
-                        config.getTextFormatString(),
-                        config::getTextFormatString,
-                        config::setTextFormatString)
-                .controller(StringControllerBuilder::create)
-                .customController((o) -> new ValidatedStringController(o, (s) -> s.contains("%d")))
-                .build();
+        .binding(
+                config.getTextFormatString(),
+                config::getTextFormatString,
+                config::setTextFormatString)
+        .controller(opt -> StringControllerBuilder.create(opt))
+        .build();
 
         Option<Boolean> renderPingBarsOption = Option.<Boolean>createBuilder()
                 .name(translatable("betterpingdisplay.settings.renderPingBars"))
@@ -82,19 +80,5 @@ public class YaclConfigScreenFactory implements ConfigScreenFactory<Screen> {
                 })
                 .build()
                 .generateScreen(parent);
-    }
-
-    private static class ValidatedStringController extends StringController {
-        private final Predicate<String> validator;
-
-        public ValidatedStringController(Option<String> option, Predicate<String> validator) {
-            super(option);
-            this.validator = validator;
-        }
-
-        @Override
-        public boolean isInputValid(String input) {
-            return validator.test(input);
-        }
     }
 }
