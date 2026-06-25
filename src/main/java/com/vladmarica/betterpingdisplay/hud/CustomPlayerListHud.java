@@ -3,10 +3,10 @@ package com.vladmarica.betterpingdisplay.hud;
 import com.vladmarica.betterpingdisplay.BetterPingDisplayMod;
 import com.vladmarica.betterpingdisplay.Config;
 import com.vladmarica.betterpingdisplay.mixin.PlayerListHudInvoker;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.PlayerListHud;
-import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.client.multiplayer.PlayerInfo;
 
 public final class CustomPlayerListHud {
   private static final int PING_TEXT_RENDER_OFFSET = -13;
@@ -14,9 +14,9 @@ public final class CustomPlayerListHud {
   private static final Config config = BetterPingDisplayMod.instance().getConfig();
 
   public static void renderPingDisplay(
-      MinecraftClient client, PlayerListHud hud, DrawContext context, int width, int x, int y, PlayerListEntry player) {
+      Minecraft client, PlayerTabOverlay hud, GuiGraphics context, int width, int x, int y, PlayerInfo player) {
     String pingString = String.format(config.getTextFormatString(), player.getLatency());
-    int pingStringWidth = client.textRenderer.getWidth(pingString);
+    int pingStringWidth = client.font.width(pingString);
     int pingTextColor = config.shouldAutoColorPingText()
         ? PingColors.getColor(player.getLatency()) : config.getTextColor().getRGB();
     int textX = width + x - pingStringWidth + PING_TEXT_RENDER_OFFSET;
@@ -26,7 +26,7 @@ public final class CustomPlayerListHud {
     }
 
     // Draw the ping text for the given player
-    context.drawTextWithShadow(client.textRenderer, pingString, textX, y, pingTextColor);
+    context.drawString(client.font, pingString, textX, y, pingTextColor);
 
     if (config.shouldRenderPingBars()) {
       ((PlayerListHudInvoker) hud).invokeRenderLatencyIcon(context, width, x, y, player);
