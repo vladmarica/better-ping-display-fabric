@@ -32,12 +32,12 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.17",
+    "fabricloader": ">=0.19.3",
     "minecraft": "${minecraft_version}"
   },
 
   "suggests": {
-    "yet_another_config_lib_v3": ">=3.8.1+1.21.11-fabric"
+    "yet_another_config_lib_v3": ">=3.9.7+26.3-fabric"
   },
 
   "custom": {

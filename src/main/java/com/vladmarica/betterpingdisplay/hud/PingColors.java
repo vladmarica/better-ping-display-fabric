@@ -1,6 +1,6 @@
 package com.vladmarica.betterpingdisplay.hud;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public final class PingColors {
   public static final int PING_START = 0;
@@ -38,7 +38,7 @@ public final class PingColors {
 
   private static float computeOffset(int start, int end, int value) {
     float offset =  (value - start) / (float) ( end - start);
-    return MathHelper.clamp(offset, 0.0F, 1.0F);
+    return Mth.clamp(offset, 0.0F, 1.0F);
   }
 
   private PingColors() {}
